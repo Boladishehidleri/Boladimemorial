@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şəhidlər Memorial Stendi</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Səhifələrin köhnə sabit fonlarını təmizləyirik */
+        body, html, .page {
+            width: 100%;
+            height: 100%;
+            overflow: hidden !important;
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 1. BAYRAQ ARXA FON KONTEYNERİ */
+        .flag-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -100;
+            overflow: hidden;
+            background-color: #0b0f19;
+        }
+
+        .moving-flag {
+            position: absolute;
+            width: 110%;
+            height: 110%;
+            top: -5%;
+            left: -5%;
+            background: url('images/bayraq1.avif') no-repeat center center;
+            background-size: cover;
+            animation: flagWaveMotion 6s ease-in-out infinite alternate;
+        }
+
+        .moving-flag::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(0,0,0,0.35) 0%,
+                rgba(255,255,255,0.1) 25%,
+                rgba(0,0,0,0.45) 50%,
+                rgba(255,255,255,0.15) 75%,
+                rgba(0,0,0,0.35) 100%
+            );
+            background-size: 50% 100%;
+            mix-blend-mode: multiply;
+            animation: shadowMove 5s linear infinite;
+        }
+
+        @keyframes flagWaveMotion {
+            0% { transform: scale(1) skewX(-2deg) skewY(-1deg); filter: brightness(0.9); }
+            100% { transform: scale(1.03) skewX(2deg) skewY(1deg); filter: brightness(1.1); }
+        }
+
+        @keyframes shadowMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 2. LAYOUT NİZAMLAMASI */
+        .about-main-container {
+            display: flex;
+            flex-direction: column;
+            width: 94%;
+            max-width: 1500px;
+            margin: 0 auto;
+            height: 100vh;
+            padding: 25px 20px;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+
+        .about-top-section {
+            display: flex;
+            width: 100%;
+            flex: 1.4; 
+            gap: 40px;
+            min-height: 0; 
+        }
+
+        /* Sol Panel - Şəkil üçün qutu */
+        .about-top-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 12px;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .about-img-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            min-height: 0;
+            width: 100%;
+        }
+
+        /* Şəhidin ad kartı */
+        .about-name-card {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 6px;
+            text-align: center;
+            border-left: 4px solid #ffcc00;
+            flex-shrink: 0;
+        }
+
+        .about-name-card h2 {
+            margin: 0 0 5px 0;
+            color: #ffcc00;
+            font-size: 1.8rem;
+        }
+
+        .about-name-card p {
+            margin: 0;
+            color: #ddd;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        /* Sağ Panel - Bioqrafiya */
+        .about-top-right {
+            flex: 1.8;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+            min-height: 0;
+        }
+
+        .biography-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #ffcc00;
+            font-size: 1.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        #about-text {
+            color: #fff;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin: 0;
+            overflow-y: auto; 
+            padding-right: 10px;
+        }
+
+        /* Alt Hissə - Qalereya */
+        .about-bottom-section {
+            width: 100%;
+            flex: 0.6; 
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-sizing: border-box;
+            min-height: 0;
+        }
+
+        .about-bottom-section h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 15px;
+            border-radius: 12px;
+            flex-grow: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.04);
+        }
+
+        .about-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        #btn-back {
+            padding: 10px 35px;
+            background-color: #e41e26;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(228, 30, 38, 0.3);
+        }
+
+        #btn-back:hover {
+            background-color: #b3141a;
+        }
+		
+		
+.gallery-grid img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 110px;
+    /* Şəkli kəsmədən ölçüləndirir */
+    object-fit: contain !important; 
+    
+    /* Künclərin radiusunu artırırıq (böyük və yumşaq künclər üçün) */
+    border-radius: 12px; 
+    
+    /* Şəkillərin kənarına incə və estetik haşiyə veririk */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px;
+    box-sizing: border-box;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    cursor: pointer;
+}
+
+/* Şəklin üzərinə toxunanda və ya gələndə vizual effekt */
+.gallery-grid img:hover {
+    transform: scale(1.05);
+    border-color: #ffcc00; /* Şəhidin ad kartındakı qızılı rənglə uyğunlaşır */
+    background: rgba(255, 255, 255, 0.08);
+}
+		
+    </style>
+</head>
+<body>
+
+    <div class="flag-wrapper">
+        <div class="moving-flag"></div>
+    </div>
+
+    <section id="homepage" class="page active">
+        <div class="fullscreen-bg">
+            <h1>ŞƏHİDLƏRİMİZİN ƏZİZ XATİRƏSİNƏ</h1>
+            <p class="blink">Ziyarət etmək üçün ekrana toxunun</p>
+        </div>
+    </section>
+
+    <section id="main-page" class="page">
+        <h2>KƏNDİMİZİN ŞƏHİDLƏRİ</h2>
+        <div id="sehidler-grid" class="grid-container"></div>
+    </section>
+
+    <section id="about-page" class="page">
+        <div class="about-main-container">
+            
+            <div class="about-top-section">
+                
+                <div class="about-top-left">
+                    <div class="about-img-container">
+                        <img id="about-img" src="" alt="Şəhidin Şəkli" style="width: auto !important; height: auto !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; display: block !important; margin: 0 auto !important;">
+                    </div>
+                    <div class="about-name-card">
+                        <h2 id="about-name"></h2>
+                        <p id="about-date"></p>
+                    </div>
+                </div>
+                
+                <div class="about-top-right">
+                    <h2 class="biography-title">Şəhidimiz</h2>
+                    <p id="about-text"></p>
+                </div>
+            </div>
+
+            <div class="about-bottom-section">
+                <h3></h3>
+                <div id="sehid-gallery" class="gallery-grid"></div>
+                <div class="about-footer">
+                    <button id="btn-back">Geri Qayıt</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <audio id="himn-audio" src="audio/himn.mp3" loop></audio>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
